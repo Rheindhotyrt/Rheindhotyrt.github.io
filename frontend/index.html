@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Absensi Wajah</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <!-- Login -->
+  <main id="login-view" class="login" hidden>
+    <form id="login-form" class="card login-card">
+      <h1>Absensi Wajah</h1>
+      <p class="muted">Sistem absensi mahasiswa berbasis face recognition</p>
+      <label>Username <input name="username" autocomplete="username" required></label>
+      <label>Password <input name="password" type="password" autocomplete="current-password" required></label>
+      <button type="submit" class="primary">Masuk</button>
+      <p id="login-error" class="error" hidden></p>
+      <p id="server-status" class="muted small"></p>
+    </form>
+  </main>
+
+  <!-- App -->
+  <div id="app-view" hidden>
+    <header class="topbar">
+      <strong>Absensi Wajah</strong>
+      <nav>
+        <a href="#/sessions">Sesi</a>
+        <a href="#/recap">Rekap</a>
+        <a href="#/students">Mahasiswa</a>
+        <a href="#/users" data-admin>Pengguna</a>
+      </nav>
+      <span class="spacer"></span>
+      <span id="model-badge" class="badge">model: ...</span>
+      <button id="account-button" class="link" type="button"></button>
+      <button id="logout-button" class="link" type="button">Keluar</button>
+    </header>
+    <main id="content" class="content"></main>
+  </div>
+
+  <div id="toast" class="toast" hidden></div>
+
+  <dialog id="dialog">
+    <form method="dialog" id="dialog-form">
+      <h2 id="dialog-title"></h2>
+      <div id="dialog-body"></div>
+      <p id="dialog-error" class="error" hidden></p>
+      <menu>
+        <button value="cancel" type="button" id="dialog-cancel">Batal</button>
+        <button value="ok" class="primary" id="dialog-ok">Simpan</button>
+      </menu>
+    </form>
+  </dialog>
+
+  <script src="config.js"></script>
+  <script src="assets/app.js" type="module"></script>
+</body>
+</html>
