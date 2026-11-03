@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%2313294b'/%3E%3Ctext x='50' y='68' font-size='54' text-anchor='middle' fill='white'%3EA%3C/text%3E%3C/svg%3E">
   <title>Absensi Wajah</title>
   <style>
     html, body { margin: 0; height: 100%; background: #0b1220; }
@@ -14,6 +15,7 @@
       transition: opacity .25s ease; z-index: 1;
     }
     #loading.hide { opacity: 0; pointer-events: none; }
+    #loading[hidden] { display: none; }
     #reload {
       position: fixed; right: 12px; bottom: 12px; z-index: 2;
       font: 13px system-ui, sans-serif; padding: 6px 10px; cursor: pointer;
@@ -25,7 +27,7 @@
 </head>
 <body>
   <div id="loading">Memuat aplikasi absensi...</div>
-  <iframe id="app" title="Absensi Wajah" allow="camera; microphone; fullscreen; autoplay" allowfullscreen referrerpolicy="no-referrer"></iframe>
+  <iframe id="app" title="Absensi Wajah" allow="camera; microphone; fullscreen; autoplay" referrerpolicy="no-referrer"></iframe>
   <button id="reload" type="button" hidden>Muat ulang</button>
   <script>
     // Aplikasi asli berjalan di Instabox. Wrapper ini hanya menampilkan halaman
@@ -44,12 +46,16 @@
     }
 
     function openApp() {
+      loading.hidden = false;
+      loading.removeAttribute("aria-hidden");
       loading.classList.remove("hide");
       frame.src = innerUrl();
     }
 
     frame.addEventListener("load", () => {
       loading.classList.add("hide");
+      loading.setAttribute("aria-hidden", "true");
+      setTimeout(() => { loading.hidden = true; }, 300);
       reload.hidden = false;
     });
     window.addEventListener("hashchange", openApp);
