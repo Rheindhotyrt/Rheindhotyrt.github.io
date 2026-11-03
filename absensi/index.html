@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Absensi Wajah</title>
+  <style>
+    html, body { margin: 0; height: 100%; background: #0b1220; }
+    iframe { display: block; width: 100%; height: 100%; border: 0; }
+    #loading {
+      position: fixed; inset: 0; display: grid; place-items: center;
+      color: #dfe8f5; background: #0b1220; font: 15px system-ui, sans-serif;
+      transition: opacity .25s ease; z-index: 1;
+    }
+    #loading.hide { opacity: 0; pointer-events: none; }
+    #reload {
+      position: fixed; right: 12px; bottom: 12px; z-index: 2;
+      font: 13px system-ui, sans-serif; padding: 6px 10px; cursor: pointer;
+      color: #dfe8f5; background: rgba(19, 41, 75, .9); border: 1px solid #3f5b85;
+      border-radius: 6px;
+    }
+    #reload[hidden] { display: none; }
+  </style>
+</head>
+<body>
+  <div id="loading">Memuat aplikasi absensi...</div>
+  <iframe id="app" title="Absensi Wajah" allow="camera; microphone; fullscreen; autoplay" allowfullscreen referrerpolicy="no-referrer"></iframe>
+  <button id="reload" type="button" hidden>Muat ulang</button>
+  <script>
+    // Aplikasi asli berjalan di Instabox. Wrapper ini hanya menampilkan halaman
+    // penuh di domain rindho.me agar URL port Instabox tidak terlihat.
+    const TARGET = "https://8999-agqxxvhbll23qw5vlnqafq5ozi.instabox.tech/";
+    const frame = document.getElementById("app");
+    const loading = document.getElementById("loading");
+    const reload = document.getElementById("reload");
+
+    function innerUrl() {
+      // Dukung link lama: #/absensi/<token>, dan bentuk ?sesi=<token>.
+      const params = new URLSearchParams(location.search);
+      const token = params.get("sesi");
+      if (token) return TARGET + "#/absensi/" + encodeURIComponent(token);
+      return TARGET + (location.hash || "");
+    }
+
+    function openApp() {
+      loading.classList.remove("hide");
+      frame.src = innerUrl();
+    }
+
+    frame.addEventListener("load", () => {
+      loading.classList.add("hide");
+      reload.hidden = false;
+    });
+    window.addEventListener("hashchange", openApp);
+    reload.addEventListener("click", openApp);
+
+    openApp();
+  </script>
+</body>
+</html>
