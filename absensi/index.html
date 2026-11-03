@@ -41,8 +41,11 @@
       // Dukung link lama: #/absensi/<token>, dan bentuk ?sesi=<token>.
       const params = new URLSearchParams(location.search);
       const token = params.get("sesi");
-      if (token) return TARGET + "#/absensi/" + encodeURIComponent(token);
-      return TARGET + (location.hash || "");
+      const hash = token ? "#/absensi/" + encodeURIComponent(token) : (location.hash || "");
+      // Beri tahu aplikasi alamat wrapper supaya tombol "Link mahasiswa"
+      // menyalin URL rindho.me, bukan URL Instabox.
+      const base = location.href.split("#")[0];
+      return TARGET + "?public_base=" + encodeURIComponent(base) + hash;
     }
 
     function openApp() {
